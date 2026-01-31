@@ -15,7 +15,7 @@ import { convertSummariesToTTS } from "./tts.js";
 
 let products = await getProducts();
 if (products.length === 0) {
-  products = await scrapeProducts({ noOfProducts: 1 });
+  products = await scrapeProducts({ noOfProducts: 5 });
   saveProducts({ products });
 }
 
