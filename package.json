@@ -19,9 +19,8 @@
   },
   "dependencies": {
     "@elevenlabs/elevenlabs-js": "^2.33.0",
-    "axios": "^1.13.4",
-    "cheerio": "^1.2.0",
     "dotenv": "^17.2.3",
-    "openai": "^6.17.0"
+    "openai": "^6.17.0",
+    "puppeteer": "^24.36.1"
   }
 }

@@ -48,6 +48,7 @@ export async function convertSummariesToTTS({
 }: {
   summaries: string[];
 }) {
+  console.log("Converting summaries", summaries);
   for (const [index, summary] of summaries.entries()) {
     console.log("Saving audio for product", index + 1);
     await generateTTS({ summary, index });

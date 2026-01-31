@@ -32,18 +32,26 @@ This project is a backend assessment tool that acts as a pipeline to:
 ## 🌐 Scraped Website
 
 The script scrapes data from:
-**[https://books.toscrape.com](https://books.toscrape.com)**
+**[https://www.ebay.com/sch/i.html?\_nkw=mechanical+keyboard](https://www.ebay.com/sch/i.html?_nkw=mechanical+keyboard)**
 
-It specifically targets the book catalogue, extracting:
+It extracts:
 
-- **Name**: Book title
-- **Price**: Book price
-- **Description**: Book summary/description
-- **URL**: Direct link to the book page
+- **Name**: Product title
+- **Price**: Product price
+- **Description**: Short description or placeholder
+- **URL**: Direct link to the product page
 
 ## 🛠 Design Choices
 
-### 1. Local Data Caching (Efficiency & Cost Saving)
+### 1. Puppeteer for Scraping (Bot Avoidance & Dynamic Content)
+
+Switched to **Puppeteer** to handle dynamic content and potential bot detection mechanisms on e-commerce sites like eBay. It allows for:
+
+- Mimicking real user behavior (User-Agent, delays).
+- Handling dynamic DOM rendering.
+- Accessing iframes (for descriptions).
+
+### 2. Local Data Caching (Efficiency & Cost Saving)
 
 To avoid hitting the website, OpenAI API, and ElevenLabs API unnecessarily during development, the system implements a check-first strategy:
 
@@ -57,16 +65,16 @@ To avoid hitting the website, OpenAI API, and ElevenLabs API unnecessarily durin
 - **Cost**: Drastically reduces API usage (OpenAI/ElevenLabs) for repetitive testing.
 - **Reliability**: Allows working offline with previously fetched data.
 
-### 2. Modular Architecture
+### 3. Modular Architecture
 
 The code is split into distinct modules for better maintainability:
 
-- `scraper.ts`: Isolates scraping logic (Cheerio/Axios).
+- `scraper.ts`: Contains Puppeteer extraction logic.
 - `llm.ts`: Isolates OpenAI interaction.
 - `tts.ts`: Isolates ElevenLabs interaction.
 - `storage.ts`: Centralizes file I/O operations.
 
-### 3. Type Safety
+### 4. Type Safety
 
 TypeScript is used throughout to ensure data integrity, particularly for the Product and Summary interfaces passed between modules.
 
