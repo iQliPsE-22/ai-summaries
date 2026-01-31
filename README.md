@@ -14,42 +14,78 @@ This project is a backend assessment tool that acts as a pipeline to:
   - If `summaries.json` exists, it skips LLM generation.
 - **Automated Pipeline**: Seamlessly connects scraping, AI summarization, and TTS.
 
-## Prerequisites
+## 🚀 How to Run the Script
 
-- Node.js (v18 or higher recommended)
-- npm
-- **OpenAI API Key**
-- **ElevenLabs API Key**
+1.  **Start the development server**:
 
-## Setup
+    ```bash
+    npm run dev
+    ```
 
-1.  **Clone the repository**:
+    This command compiles the TypeScript code and runs the pipeline.
+
+2.  **Verify Output**:
+    - Check `products.json` for scraped data.
+    - Check `summaries.json` for generated summaries.
+    - Check `audio_output/` folder for the generated MP3 files.
+
+## 🌐 Scraped Website
+
+The script scrapes data from:
+**[https://books.toscrape.com](https://books.toscrape.com)**
+
+It specifically targets the book catalogue, extracting:
+
+- **Name**: Book title
+- **Price**: Book price
+- **Description**: Book summary/description
+- **URL**: Direct link to the book page
+
+## 🛠 Design Choices
+
+### 1. Local Data Caching (Efficiency & Cost Saving)
+
+To avoid hitting the website, OpenAI API, and ElevenLabs API unnecessarily during development, the system implements a check-first strategy:
+
+- **Products**: Before scraping, it checks if `products.json` exists and is populated. If found, it uses the local file.
+- **Summaries**: Before calling the LLM, it checks if `summaries.json` exists. If found, it uses the local summaries.
+- **TTS**: Audio generation relies on the final list of summaries.
+
+**Why?**
+
+- **Speed**: Immediate execution on subsequent runs.
+- **Cost**: Drastically reduces API usage (OpenAI/ElevenLabs) for repetitive testing.
+- **Reliability**: Allows working offline with previously fetched data.
+
+### 2. Modular Architecture
+
+The code is split into distinct modules for better maintainability:
+
+- `scraper.ts`: Isolates scraping logic (Cheerio/Axios).
+- `llm.ts`: Isolates OpenAI interaction.
+- `tts.ts`: Isolates ElevenLabs interaction.
+- `storage.ts`: Centralizes file I/O operations.
+
+### 3. Type Safety
+
+TypeScript is used throughout to ensure data integrity, particularly for the Product and Summary interfaces passed between modules.
+
+## Prerequisites & Setup
+
+1.  **Clone & Install**:
 
     ```bash
     git clone <repository-url>
     cd ss-backend-assessment
-    ```
-
-2.  **Install dependencies**:
-
-    ```bash
     npm install
     ```
 
-3.  **Configure Environment Variables**:
-    Create a `.env` file in the root directory and add your API keys:
+2.  **Configure Environment**:
+    Create a `.env` file with your keys:
     ```env
-    OPENAI_API_KEY=your_openai_api_key_here
-    ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
+    OPENAI_API_KEY=your_key
+    ELEVENLABS_API_KEY=your_key
     ```
-
-## Usage
-
-To start the development server (which runs the pipeline):
-
-```bash
-npm run dev
-```
 
 ### How to Refresh Data
 
