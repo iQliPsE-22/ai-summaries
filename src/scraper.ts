@@ -165,14 +165,13 @@ export async function scrapeProducts({
 
   try {
     browser = await puppeteer.launch({
-      headless: false, // Keep false for debugging/demo
+      headless: true,
       args: [
         "--no-sandbox",
         "--disable-setuid-sandbox",
         "--disable-blink-features=AutomationControlled",
       ],
     });
-
     const page = await browser.newPage();
     await page.setViewport(CONFIG.viewport);
     await page.setUserAgent(CONFIG.userAgent);
