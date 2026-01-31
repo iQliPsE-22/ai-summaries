@@ -70,21 +70,37 @@ The code is split into distinct modules for better maintainability:
 
 TypeScript is used throughout to ensure data integrity, particularly for the Product and Summary interfaces passed between modules.
 
-## Prerequisites & Setup
+## Prerequisites
 
-1.  **Clone & Install**:
+Before running this project, ensure you have the following installed:
+
+- **Node.js** (v18.0.0 or higher recommended)
+- **npm** (Node Package Manager)
+- **Git** (for version control)
+- **API Keys**: You will need valid API keys for:
+  - [OpenAI](https://platform.openai.com/) (for summarization)
+  - [ElevenLabs](https://elevenlabs.io/) (for text-to-speech)
+
+## Setup
+
+1.  **Clone the repository**:
 
     ```bash
     git clone <repository-url>
     cd ss-backend-assessment
+    ```
+
+2.  **Install dependencies**:
+
+    ```bash
     npm install
     ```
 
-2.  **Configure Environment**:
-    Create a `.env` file with your keys:
+3.  **Configure Environment**:
+    Create a `.env` file in the root directory and add your keys:
     ```env
-    OPENAI_API_KEY=your_key
-    ELEVENLABS_API_KEY=your_key
+    OPENAI_API_KEY=your_openai_api_key_here
+    ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
     ```
 
 ### How to Refresh Data
