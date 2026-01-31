@@ -9,10 +9,7 @@ This project is a backend assessment tool that acts as a pipeline to:
 ## Features
 
 - **Data Persistence**: Scraped products and generated summaries are saved to local JSON files (`products.json`, `summaries.json`).
-- **Smart Caching**: To save on API costs and processing time, the system checks for existing local files before initiating new scraping or generation requests.
-  - If `products.json` exists, it skips scraping.
-  - If `summaries.json` exists, it skips LLM generation.
-- **Automated Pipeline**: Seamlessly connects scraping, AI summarization, and TTS.
+- **Automated Pipeline**: Seamlessly connects scraping, AI summarization, and TTS in a linear process.
 
 ## 🚀 How to Run the Script
 
@@ -32,36 +29,30 @@ This project is a backend assessment tool that acts as a pipeline to:
 ## 🌐 Scraped Website
 
 The script scrapes data from:
-**[https://books.toscrape.com](https://books.toscrape.com)**
+**[https://www.ebay.com/sch/i.html?\_nkw=mechanical+keyboard](https://www.ebay.com/sch/i.html?_nkw=mechanical+keyboard)**
 
-It specifically targets the book catalogue, extracting:
+It extracts:
 
-- **Name**: Book title
-- **Price**: Book price
-- **Description**: Book summary/description
-- **URL**: Direct link to the book page
+- **Name**: Product title
+- **Price**: Product price
+- **Description**: Short description or placeholder
+- **URL**: Direct link to the product page
 
 ## 🛠 Design Choices
 
-### 1. Local Data Caching (Efficiency & Cost Saving)
+### 1. Puppeteer for Scraping (Bot Avoidance & Dynamic Content)
 
-To avoid hitting the website, OpenAI API, and ElevenLabs API unnecessarily during development, the system implements a check-first strategy:
+Switched to **Puppeteer** to handle dynamic content and potential bot detection mechanisms on e-commerce sites like eBay. It allows for:
 
-- **Products**: Before scraping, it checks if `products.json` exists and is populated. If found, it uses the local file.
-- **Summaries**: Before calling the LLM, it checks if `summaries.json` exists. If found, it uses the local summaries.
-- **TTS**: Audio generation relies on the final list of summaries.
-
-**Why?**
-
-- **Speed**: Immediate execution on subsequent runs.
-- **Cost**: Drastically reduces API usage (OpenAI/ElevenLabs) for repetitive testing.
-- **Reliability**: Allows working offline with previously fetched data.
+- Mimicking real user behavior (User-Agent, delays).
+- Handling dynamic DOM rendering.
+- Accessing iframes (for descriptions).
 
 ### 2. Modular Architecture
 
 The code is split into distinct modules for better maintainability:
 
-- `scraper.ts`: Isolates scraping logic (Cheerio/Axios).
+- `scraper.ts`: Contains Puppeteer extraction logic.
 - `llm.ts`: Isolates OpenAI interaction.
 - `tts.ts`: Isolates ElevenLabs interaction.
 - `storage.ts`: Centralizes file I/O operations.
@@ -102,14 +93,6 @@ Before running this project, ensure you have the following installed:
     OPENAI_API_KEY=your_openai_api_key_here
     ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
     ```
-
-### How to Refresh Data
-
-Because the system prefers local data:
-
-- To **re-scrape products**, delete `products.json`.
-- To **regenerate summaries**, delete `summaries.json`.
-- To **start fresh**, delete both JSON files.
 
 ## Project Structure
 

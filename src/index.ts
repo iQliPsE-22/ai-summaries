@@ -13,25 +13,18 @@ import { convertSummariesToTTS } from "./tts.js";
 //  step 1: scrape products
 // ------------------------
 
-let products = await getProducts();
-if (products.length === 0) {
-  products = await scrapeProducts({ noOfProducts: 5 });
-  saveProducts({ products });
-}
+const products = await scrapeProducts({ noOfProducts: 5 });
+saveProducts({ products });
 
 //----------------------------
 //  step 2: generate product summaries and save in files
 // ------------------------
-
-let summaries = await getSummaries();
-console.log(summaries);
-if (summaries.length === 0) {
-  summaries = await generateSummaries({ products });
-  saveSummaries({ summaries });
-}
+const fetchedProducts = await getProducts();
+const summaries = await generateSummaries({ products: fetchedProducts });
+saveSummaries({ summaries });
 
 //-------------------------
 //  step 3: generate tts and save in files
 // ------------------------
-
-await convertSummariesToTTS({ summaries });
+const fetchedSummaries = await getSummaries();
+await convertSummariesToTTS({ summaries: fetchedSummaries });
