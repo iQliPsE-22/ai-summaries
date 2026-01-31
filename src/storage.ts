@@ -32,12 +32,13 @@ export async function getProducts(): Promise<product[]> {
   }
 }
 
-export async function saveTTS({ tts }: { tts: any }) {
+export async function getSummaries(): Promise<string[]> {
   try {
-    console.log("Saving tts to tts.json");
-    fs.writeFileSync("tts.json", JSON.stringify(tts));
-    console.log("TTS saved successfully");
+    const summaries = fs.readFileSync("./summaries.json", "utf-8");
+    console.log("Summaries loaded successfully");
+    return JSON.parse(summaries);
   } catch (error) {
     console.error(error);
+    return [];
   }
 }
